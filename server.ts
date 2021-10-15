@@ -13,7 +13,9 @@ const bcrypt = require("bcrypt");
 const compression = require("compression");
 const helmet = require("helmet");
 const fs = require("fs");
-const https = require("https");
+
+
+
 
 // CONSTANTS DECLARATIONS
 const saltRounds = 10;
@@ -159,7 +161,7 @@ app.post("/login", async (req: Request, res: Response) => {
           id: existingUser._id,
         },
         process.env.SECRET_KEY,
-        { expiresIn: "1000d" }
+        { expiresIn: "1d" }
       );
       res.status(200).json({ result: existingUser, token });
       const saveResult = await SET_ASYNC(
