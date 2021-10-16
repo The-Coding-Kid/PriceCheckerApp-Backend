@@ -14,9 +14,6 @@ const compression = require("compression");
 const helmet = require("helmet");
 const fs = require("fs");
 
-
-
-
 // CONSTANTS DECLARATIONS
 const saltRounds = 10;
 const ipfilter = require("express-ipfilter").IpFilter;
@@ -163,17 +160,10 @@ app.post("/login", async (req: Request, res: Response) => {
         process.env.SECRET_KEY,
         { expiresIn: "1d" }
       );
-      res.status(200).json({ result: existingUser, token });
-      const saveResult = await SET_ASYNC(
-        "session",
-        JSON.stringify({ result: existingUser, token }),
-        "EX"
-      );
-      return;
+      return res.status(200).json({ result: existingUser, token });
     }
   } catch (err) {
-    res.status(500).json("Error: " + err);
-    return;
+    return res.status(500).json("Error: " + err);
   }
 });
 
