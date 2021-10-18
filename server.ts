@@ -37,10 +37,11 @@ const DEL_ASYNC = promisify(client.del).bind(client);
 //@ts-ignore
 let User = require("./models/User.model");
 let Item = require("./models/Item.model");
+let Category = require("./models/Category.model");
 require("dotenv").config();
 
 // TYPEDEFS IMPORTS/DECLARATIONS
-import { Request, Response } from "express";
+import { json, Request, Response } from "express";
 interface User {
   username: string;
   password: string;
@@ -167,10 +168,45 @@ app.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/category/all", async (req: Request, res: Response) => {
+  try {
+    const reply = await GET_ASYNC("categories");
+    if (reply) {
+      console.log("Using Cached Result");
+      res.send(JSON.parse(reply));
+      return;
+    }
+    Category.find().then(async (items: any) => {
+      res.json(items);
+      const result = await SET_ASYNC(
+        "categories",
+        JSON.stringify(items),
+        "EX",
+        100000000
+      );
+    });
+  } catch (err: any) {
+    res.status(400).json(err);
+    return;
+  }
+});
+
 app.get("/items/all", async (req: Request, res: Response) => {
   try {
+    const reply = await GET_ASYNC("items");
+    if (reply) {
+      console.log("Using Cache");
+      res.send(JSON.parse(reply));
+      return;
+    }
     Item.find().then(async (items: any) => {
       res.json(items);
+      const result = await SET_ASYNC(
+        "items",
+        JSON.stringify(items),
+        "EX",
+        10000000000
+      );
     });
   } catch (err: any) {
     res.status(400).json(err);
@@ -182,14 +218,14 @@ app.post("/items/new", async (req: Request, res: Response) => {
   const name = req.body.name;
   const category = req.body.category;
   const store = req.body.store;
-  const latitude = req.body.latitude;
-  const longitude = req.body.longitude;
+  const coordinate = req.body.coordinate;
 
-  const newItem = new Item({ name, category, store, latitude, longitude });
+  const newItem = new Item({ name, category, store, coordinate });
   newItem
     .save()
     .then(async () => {
       res.json("New Item added to the database successfully!");
+      const result = await DEL_ASYNC("items");
     })
     .catch((err: Error) => {
       res.status(400).json(err);
@@ -223,6 +259,22 @@ app.get("/", async (req: Request, res: Response) => {
 
 app.get("/test", async (req: Request, res: Response) => {
   res.json("Hello world");
+});
+
+app.post("/category/new", async (req: Request, res: Response) => {
+  const id = req.body.id;
+  const name = req.body.name;
+
+  const newCategory = new Category({ id, name });
+  newCategory
+    .save()
+    .then(async () => {
+      res.json("New Category Added");
+    })
+    .catch((err: Error) => {
+      res.status(400).json(err);
+      return;
+    });
 });
 
 // ***************************************************
