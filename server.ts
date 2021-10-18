@@ -12,7 +12,6 @@ const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const compression = require("compression");
 const helmet = require("helmet");
-const fs = require("fs");
 
 // CONSTANTS DECLARATIONS
 const saltRounds = 10;
@@ -172,7 +171,6 @@ app.get("/category/all", async (req: Request, res: Response) => {
   try {
     const reply = await GET_ASYNC("categories");
     if (reply) {
-      console.log("Using Cached Result");
       res.send(JSON.parse(reply));
       return;
     }
@@ -195,7 +193,6 @@ app.get("/items/all", async (req: Request, res: Response) => {
   try {
     const reply = await GET_ASYNC("items");
     if (reply) {
-      console.log("Using Cache");
       res.send(JSON.parse(reply));
       return;
     }
@@ -270,6 +267,7 @@ app.post("/category/new", async (req: Request, res: Response) => {
     .save()
     .then(async () => {
       res.json("New Category Added");
+      const result = await DEL_ASYNC("categories");
     })
     .catch((err: Error) => {
       res.status(400).json(err);
