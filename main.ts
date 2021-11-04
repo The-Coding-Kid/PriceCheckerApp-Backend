@@ -63,7 +63,7 @@ interface UserList {
 
 // EXPRESS CONFIGS
 const app = express();
-const port: String | 5000 = process.env.PORT || 5000;
+const port: String | 5001 = process.env.PORT || 5001;
 
 //MIDDLEWARE
 app.use(cors());
