@@ -21,7 +21,6 @@ const ips = [
   "::ffff:192.168.86.162",
   "::ffff:127.0.0.1",
   "::ffff:192.168.86.166",
-  "::1",
 ];
 
 //REDIS DECLARATIONS
