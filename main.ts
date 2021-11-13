@@ -81,7 +81,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .catch((err: Error) => {
-    console.log("Could not connect to the database");
+    console.log(err, " Could not connect to the database");
   });
 const connection = mongoose.connection;
 connection.once("open", () => {
