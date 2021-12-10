@@ -15,13 +15,6 @@ const helmet = require("helmet");
 
 // CONSTANTS DECLARATIONS
 const saltRounds = 10;
-const ipfilter = require("express-ipfilter").IpFilter;
-const ips = [
-  "69.181.208.142",
-  "::ffff:192.168.86.162",
-  "::ffff:127.0.0.1",
-  "::ffff:192.168.86.166",
-];
 
 //REDIS DECLARATIONS
 const client = redis.createClient({
@@ -229,8 +222,6 @@ app.post("/items/new", async (req: Request, res: Response) => {
       return;
     });
 });
-
-app.use(ipfilter(ips, { mode: "allow" }));
 
 app.get("/", async (req: Request, res: Response) => {
   try {
