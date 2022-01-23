@@ -32,7 +32,7 @@ let Item = require("./models/Item.model");
 let Category = require("./models/Category.model");
 require("dotenv").config();
 
-// TYPEDEFS IMPORTS/DECLARATIONS
+// TYPE DEFINITIONS IMPORTS/DECLARATIONS
 import { json, Request, Response } from "express";
 interface User {
   username: string;
