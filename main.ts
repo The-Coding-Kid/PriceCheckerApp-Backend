@@ -1,12 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 //IMPORTS
 const express = require("express");
 const cors = require("cors");
-//@ts-ignore
 const mongoose = require("mongoose");
-const router = require("express").Router();
 const redis = require("redis");
 const responseTime = require("response-time");
-const axios = require("axios");
 const { promisify } = require("util");
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -26,10 +24,9 @@ const SET_ASYNC = promisify(client.set).bind(client);
 const DEL_ASYNC = promisify(client.del).bind(client);
 
 //MongoDB DECLARATIONS
-//@ts-ignore
-let User = require("./models/User.model");
-let Item = require("./models/Item.model");
-let Category = require("./models/Category.model");
+const User = require("./models/User.model");
+const Item = require("./models/Item.model");
+const Category = require("./models/Category.model");
 require("dotenv").config();
 
 // TYPE DEFINITIONS IMPORTS/DECLARATIONS
@@ -46,16 +43,16 @@ interface Register {
 }
 
 interface UserList {
-  _id: String;
-  email: String;
-  username: String;
-  password: String;
-  __v: Number;
+  _id: string;
+  email: string;
+  username: string;
+  password: string;
+  __v: number;
 }
 
 // EXPRESS CONFIGS
 const app = express();
-const port: String | 5001 = process.env.PORT || 5001;
+const port: string | 5001 = process.env.PORT || 5001;
 
 //MIDDLEWARE
 app.use(cors());
