@@ -1,8 +1,5 @@
-import { type } from "os";
+import mongoose from "mongoose";
 
-//@ts-ignore
-const mongoose = require("mongoose");
-//@ts-ignore
 const Schema = mongoose.Schema;
 
 const CategorySchema = new Schema({
@@ -17,4 +14,4 @@ const CategorySchema = new Schema({
 });
 
 const Category = mongoose.model("Category", CategorySchema);
-module.exports = Category;
+export default Category;

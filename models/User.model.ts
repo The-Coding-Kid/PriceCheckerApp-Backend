@@ -1,5 +1,4 @@
-//@ts-ignore
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 export interface IUser {
@@ -27,6 +26,5 @@ const userSchema = new Schema({
   // },
 });
 
-//@ts-ignore
 const User = mongoose.model<IUser>("User", userSchema);
-module.exports = User;
+export default User;
